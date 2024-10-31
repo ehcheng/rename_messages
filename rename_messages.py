@@ -1,6 +1,7 @@
 import os
 import glob
 import vobject
+import argparse
 
 def parse_vcf(vcf_file):
     contacts = {}
@@ -56,10 +57,24 @@ def rename_html_files(directory, contacts):
         os.rename(file, new_path)
         print(f'Renamed {file} to {new_path}')
 
+def main():
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description="Parse VCF file and rename HTML files based on contacts.")
+    
+    # Optional arguments for VCF file and HTML directory
+    parser.add_argument('-c', '--contacts', type=str, default='contacts.vcf',
+                        help='Path to the VCF file (default: contacts.vcf)')
+    parser.add_argument('-o', '--export-path', type=str, default='source',
+                        help='Directory containing HTML files (default: source)')
+
+    # Parse arguments
+    args = parser.parse_args()
+    
+    # Parse contacts from the VCF file
+    contacts = parse_vcf(args.contacts)
+    
+    # Rename HTML files based on the parsed contacts
+    rename_html_files(args.export_path, contacts)
 
 if __name__ == "__main__":
-    vcf_file = 'contacts.vcf'  # Path to your vCard file
-    html_directory = 'source'  # Path to the directory containing HTML files
-
-    contacts = parse_vcf(vcf_file)
-    rename_html_files(html_directory, contacts)
+    main()

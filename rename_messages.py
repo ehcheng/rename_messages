@@ -28,7 +28,7 @@ def parse_vcf(vcf_file, country_code=None):
                         contacts[number] = name
                 if hasattr(vcard, 'email_list'):
                     for email in vcard.email_list:
-                        email_value = email.value
+                        email_value = email.value.lower()
                         contacts[email_value] = name
     return contacts
 
